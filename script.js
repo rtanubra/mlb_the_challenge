@@ -140,7 +140,7 @@ function updateDualTrial(data){
         </tr>
         `)
     }
-    
+    $(".row").removeClass("hide-me")
 }
 function gatherDualTrial(myJson){
     console.log(myJson)
@@ -185,7 +185,7 @@ function gatherDualTrial(myJson){
     //round summary
     summary[0] = Math.round(summary[0]*100)/100
     summary[1] = Math.round(summary[1]*100)/100
-    
+
     return {
         "players":players,
         "stats":stats,
