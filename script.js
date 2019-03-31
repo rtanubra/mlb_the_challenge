@@ -101,10 +101,12 @@ function updateDualTrial(data){
         "stats":stats,
         "statsNames":statsNames,
         "statsAbrvs":statsAbrvs
+        "summary":summary
         }   
      */
     
     //just a little unpacking for ease of use
+    const summary = data["summary"]
     const players = data["players"]
     const stats = data["stats"]
     const statsAbrvs = data["statsAbrvs"]
@@ -117,19 +119,24 @@ function updateDualTrial(data){
     $(".player1-header").text(`${data["players"][0]}`)
     $(".player2-header").text(`${data["players"][1]}`)
 
+    //update summary
+    $(".player1-summary").text(summary[0])
+    $(".player2-summary").text(summary[1])
+
+    //create table
     for (let i=0; i<statsAbrvs.length ; i++){
         $(".player1_stats").append(`
         <tr>
             <td>${statsNames[i].slice(0,15)} (${statsAbrvs[i]})</td>
-            <td>${stats[statsAbrvs[i]][0]}</td>
-            <td>${Math.round(stats[statsAbrvs[i]][0]/bestStatsHitter[statsAbrvs[i]]*10000)/100}</td>
+            <td>${stats[statsAbrvs[i]][0][0]}</td>
+            <td>${stats[statsAbrvs[i]][0][1]}</td>
         </tr>
         `)
         $(".player2_stats").append(`
         <tr>
             <td>${statsNames[i].slice(0,15)} (${statsAbrvs[i]})</td>
-            <td>${stats[statsAbrvs[i]][1]}</td>
-            <td>${Math.round(stats[statsAbrvs[i]][1]/bestStatsHitter[statsAbrvs[i]]*10000)/100}</td>
+            <td>${stats[statsAbrvs[i]][1][0]}</td>
+            <td>${stats[statsAbrvs[i]][1][1]}</td>
         </tr>
         `)
     }
@@ -140,35 +147,51 @@ function gatherDualTrial(myJson){
     const playerStats = myJson['cumulativeplayerstats']["playerstatsentry"]
     const statsAbrvHigh = ["R","HR","RBI","AVG","SB"]
     const statsAbrvLow = ["CS"]
-    
+    const fullListOfNames = Object.keys(playerStats[0]["stats"])
     const statsAbrvs = []
-    const statsNames = Object.keys(playerStats[0]["stats"])
-    for (let i=0; i< statsNames.length;i++){
-        statsAbrvs.push(playerStats[0]["stats"][statsNames[i]]["@abbreviation"])
+    const statsNames = []
+
+    console.log(fullListOfNames)
+    for (let i=0; i< fullListOfNames.length;i++){
+        if (statsAbrvs.indexOf(playerStats[0]["stats"][fullListOfNames[i]]["@abbreviation"])<0){
+            statsAbrvs.push(playerStats[0]["stats"][fullListOfNames[i]]["@abbreviation"])
+            statsNames.push(fullListOfNames[i])
+        }
     }
     const players = [
         `${playerStats[0]["player"]["FirstName"]} ${playerStats[0]["player"]["LastName"]} (${playerStats[0]["player"]["JerseyNumber"]})`,
         `${playerStats[1]["player"]["FirstName"]} ${playerStats[1]["player"]["LastName"]} (${playerStats[1]["player"]["JerseyNumber"]})`
     ]
     let stats = {
-        "G":[0,0],
-        "R":[0,0],
-        "HR":[0,0],
-        "RBI":[0,0],
-        "AVG":[0,0],
-        "SB":[0,0],
-        "CS":[0,0],
+        "G":[[0,0],[0,0]],
+        "R": [[0,0],[0,0]],
+        "HR":[[0,0],[0,0]],
+        "RBI":[[0,0],[0,0]],
+        "AVG":[[0,0],[0,0]],
+        "SB":[[0,0],[0,0]],
+        "CS":[[0,0],[0,0]],
     }
     for (let i =0; i<2; i++){
         for (let x = 0; x<statsAbrvs.length; x++){
-            stats[statsAbrvs[x]][i] = parseFloat(playerStats[i]["stats"][statsNames[x]]["#text"])
+            stats[statsAbrvs[x]][i][0] = parseFloat(playerStats[i]["stats"][statsNames[x]]["#text"])
+            stats[statsAbrvs[x]][i][1] = Math.round(parseFloat(playerStats[i]["stats"][statsNames[x]]["#text"] /bestStatsHitter[statsAbrvs[i]]*100)*100)/100
         }
     }
+    const summary= [0,0]
+    for (let i = 0; i<statsAbrvs.length; i ++){
+        summary[0] += stats[statsAbrvs[i]][0][1]
+        summary[1] += stats[statsAbrvs[i]][1][1]
+    }
+    //round summary
+    summary[0] = Math.round(summary[0]*100)/100
+    summary[1] = Math.round(summary[1]*100)/100
+    
     return {
         "players":players,
         "stats":stats,
         "statsNames":statsNames,
-        "statsAbrvs":statsAbrvs
+        "statsAbrvs":statsAbrvs,
+        "summary":summary
     }
 }
 
