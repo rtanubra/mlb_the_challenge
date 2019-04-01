@@ -7,7 +7,7 @@ const bestStatsHitter = {
     "RBI":130,
     "SB":45,
     "AVG":0.346,
-    "CS":0.01,
+    "CS":-8,
     "G":162
 }
 
@@ -173,8 +173,10 @@ function gatherDualTrial(myJson){
     }
     for (let i =0; i<2; i++){
         for (let x = 0; x<statsAbrvs.length; x++){
-            stats[statsAbrvs[x]][i][0] = parseFloat(playerStats[i]["stats"][statsNames[x]]["#text"])
-            stats[statsAbrvs[x]][i][1] = Math.round(parseFloat(playerStats[i]["stats"][statsNames[x]]["#text"] /bestStatsHitter[statsAbrvs[i]]*100)*100)/100
+            let statOInterest = parseFloat(playerStats[i]["stats"][statsNames[x]]["#text"])
+            let bestStat = bestStatsHitter[statsAbrvs[x]]
+            stats[statsAbrvs[x]][i][0] = statOInterest
+            stats[statsAbrvs[x]][i][1] = Math.round(statOInterest/bestStat*10000)/100
         }
     }
     const summary= [0,0]
