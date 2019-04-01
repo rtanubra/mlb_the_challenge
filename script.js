@@ -200,6 +200,11 @@ function hyphonateName(name){
     const hyphonated_name = name.replace(" ","-")
     return hyphonated_name
 }
+function trimStr(mystr){
+    mystr = mystr.replace(/^\s+|\s+$/g,"")
+    mystr = mystr.replace(/\./g,"")
+    return mystr
+}
 function fetchDualTrial(){
     const options= {
         headers: new Headers({
@@ -207,8 +212,8 @@ function fetchDualTrial(){
         })
     }
     const baseUrl= "https://api.mysportsfeeds.com/v1.2/pull/mlb/2018-regular/cumulative_player_stats.json"
-    const player1 = hyphonateName($("#js-player-1").val())
-    const player2 = hyphonateName($("#js-player-2").val())
+    const player1 = hyphonateName(trimStr($("#js-player-1").val()))
+    const player2 = hyphonateName(trimStr($("#js-player-2").val()))
     console.log(player1,player2)
     const params = {
         "player":`${player1},${player2}`,
