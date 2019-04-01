@@ -237,9 +237,8 @@ function fetchDualTrial(){
 
 function watchClickMe(){
     console.log("Ready to receive a click me.")
-    $(".my-button").click(function(){
-        console.log("clicked")
-        //fetchBasic()
+    $(".js-players-form").submit(event=>{
+        event.preventDefault()
         fetchDualTrial()
     })
 }
