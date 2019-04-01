@@ -140,7 +140,7 @@ function updateDualTrial(data){
         </tr>
         `)
     }
-    $(".row").removeClass("hide-me")
+    $(".cards").removeClass("hide-me")
 }
 function gatherDualTrial(myJson){
     console.log(myJson)
@@ -194,7 +194,10 @@ function gatherDualTrial(myJson){
         "summary":summary
     }
 }
-
+function hyphonateName(name){
+    const hyphonated_name = name.replace(" ","-")
+    return hyphonated_name
+}
 function fetchDualTrial(){
     const options= {
         headers: new Headers({
@@ -202,8 +205,11 @@ function fetchDualTrial(){
         })
     }
     const baseUrl= "https://api.mysportsfeeds.com/v1.2/pull/mlb/2018-regular/cumulative_player_stats.json"
+    const player1 = hyphonateName($("#js-player-1").val())
+    const player2 = hyphonateName($("#js-player-2").val())
+    console.log(player1,player2)
     const params = {
-        "player":"Mookie-Betts,Jose-Altuve",
+        "player":`${player1},${player2}`,
         "playerstats":"r,hr,rbi,avg,sb,cs",
         "sort":"player.lastname"
     }
