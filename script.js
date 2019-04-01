@@ -20,80 +20,6 @@ function createUrl(params,baseUrl){
     return final_url
 }
 
-function gatherBasic(myJson){
-    //console.log(myJson)
-    const gamelogs = myJson['playergamelogs']["gamelogs"]
-    const statsAbrvHigh = ["R","HR","RBI","AVG","SB"]
-    const statsAbrvLow = ["CS"]
-    let stats = {
-        "R":[],
-        "HR":[],
-        "RBI":[],
-        "AVG":[],
-        "SB":[],
-        "CS":[],
-    }
-    let statsBest = {
-        "R":0,
-        "HR":0,
-        "RBI":0,
-        "AVG":0,
-        "SB":0,
-        "CS":0,
-    }
-    const statNames = Object.keys(gamelogs[0]["stats"]) 
-    //console.log(statNames)
-
-    //Fill statistics
-    for (let i = 0; i< gamelogs.length;i++){
-        for (let j = 0; j< statNames.length; j++){
-            stats[gamelogs[i]["stats"][statNames[j]]["@abbreviation"]].push(parseFloat(gamelogs[i]["stats"][statNames[j]]["#text"]))
-        }
-    }
-
-    //console.log(stats)
-    for (let i =0; i<statsAbrvHigh.length;i++){
-        statsBest[statsAbrvHigh[i]] = Math.max(...stats[statsAbrvHigh[i]])
-    }
-    for (let i =0; i<statsAbrvLow.length;i++){
-        statsBest[statsAbrvLow[i]] = Math.min(...stats[statsAbrvLow[i]])
-    }
-
-    console.log(statsBest)
-    console.log(stats)
-
-}
-
-function fetchBasic(){
-    const options= {
-        headers: new Headers({
-            "Authorization": `Basic ${btoa(`${apikey}:${password}`)})`
-        })
-    }
-    const baseUrl= "https://api.mysportsfeeds.com/v1.0/pull/mlb/2018-regular/player_gamelogs.json"
-    const params = {
-        "player":"Mookie-Betts,Jose-Altuve,Mike-Trout",
-        "playerstats":"r,hr,rbi,avg,sb,cs",
-        "sort":"player.lastname"
-    }
-    const fetchUrl = createUrl(params,baseUrl)
-    fetch(fetchUrl,options).then(
-        response =>{
-            if (response.ok){
-                return response.json()
-            }
-            else{
-                throw new Error(response.statusText)
-            }
-        }
-    ).then(
-        responseJson=>{
-            gatherBasic(responseJson)
-        }
-    ).catch(
-        err=> console.log(err)
-    )
-}
 function updateDualTrial(data){
     /**
      * {
@@ -196,6 +122,7 @@ function gatherDualTrial(myJson){
         "summary":summary
     }
 }
+
 function hyphonateName(name){
     const hyphonated_name = name.replace(" ","-")
     return hyphonated_name
@@ -205,6 +132,7 @@ function trimStr(mystr){
     mystr = mystr.replace(/\./g,"")
     return mystr
 }
+
 function fetchDualTrial(){
     const options= {
         headers: new Headers({
