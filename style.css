@@ -20,3 +20,9 @@ button{
     color:black;
     border:1px solid green;
 }
+table, th, td {
+  border: 1px solid black;
+}
+th{
+    text-align: center;
+}
