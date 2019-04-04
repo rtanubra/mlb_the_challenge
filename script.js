@@ -177,16 +177,38 @@ function watchClickMe(){
 
 }
 
+function updateInstructions(searchClass){
+    const allClasses = [".js-pitcher-button",".js-hitter-button"]
+    if (searchClass===".js-pitcher-button"){
+        $(".ol-instructions").empty()
+        $(".ol-instructions").html(`
+            <li>Enter your pitcher's name for p1 above</li>
+            <li>Enter his challenger's name in p2 above</li>
+            <li>Click submit to begin the challenge</li>
+        `)
+    }
+    else{
+        $(".ol-instructions").empty()
+        $(".ol-instructions").html(`
+            <li>Enter your hitter's name for p1 above</li>
+            <li>Enter his challenger's name in p2 above</li>
+            <li>Click submit to begin the challenge</li>
+        `)
+    }
+}
+
 function navigateTo(searchClass){
     const allClasses = [".js-pitcher-button",".js-hitter-button"]
     const formClasses = [".pitchers",".hitters"]
     for (let i=0; i<allClasses.length ;i++){
         if (allClasses[i] === searchClass ){
-            $(`${allClasses[i]}`).removeClass("hide-me")
+            //button will be counterintuitive. Display what you are not currently using
+            $(`${allClasses[i]}`).addClass("hide-me")
             $(`${formClasses[i]}`).removeClass("hide-me")
         }
         else {
-            $(`${allClasses[i]}`).addClass("hide-me")
+            //button will be counterintuitive. Display what you are not currently using
+            $(`${allClasses[i]}`).removeClass("hide-me")
             $(`${formClasses[i]}`).addClass("hide-me")
         }
     }
@@ -194,10 +216,12 @@ function navigateTo(searchClass){
 
 function watchNavigate(){
     $(".js-pitcher-button").click(event=>{
-        navigateTo(".js-hitter-button")
+        navigateTo(".js-pitcher-button")
+        updateInstructions(".js-pitcher-button")
     })
     $(".js-hitter-button").click(event=>{
-        navigateTo(".js-pitcher-button")
+        navigateTo(".js-hitter-button")
+        updateInstructions(".js-hitter-button")
     })
 }
 
