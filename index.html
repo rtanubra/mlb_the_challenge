@@ -15,15 +15,47 @@
     <body>
         <h1>The-Challenge MLB edition</h1>
         <div class="container-fluid">
-            <section class="form-section">
+            <section class="form-section hitters">
                 <form action="" class="js-players-form" >
-                    <legend>The Contenders</legend>
+                    <legend>The Hitters</legend>
                     <label for="js-player-1" >P1</label><input id="js-player-1" type="text" value="Eddie Rosario">
                     <br>
                     <label for="js-player-2" >P2</label><input id="js-player-2" type="text" value="Anthony Rizzo">
                     <br>
                     <input class="submit-button" type="submit" value="Run The-Challenge">
                 </form>
+                <br>
+            </section>
+            <section class="form-section pitchers hide-me">
+                <form action="" class="js-players-form-p" >
+                    <legend>The Pitchers</legend>
+                    <label for="js-player-1-p" >P1</label><input id="js-player-1" type="text" value="Eddie Rosario">
+                    <br>
+                    <label for="js-player-2-p" >P2</label><input id="js-player-2" type="text" value="Anthony Rizzo">
+                    <br>
+                    <input class="submit-button" type="submit" value="Run The-Challenge">
+                </form>
+                <br>
+            </section>
+            <section>
+                <div class="landing-page">
+                    <br>
+                    <h2 class="instructions">Welcome, read me before use!</h2>
+                    <h3>How to Use</h3>
+                    <ol>
+                        <li>Enter your hitter's name for p1 above</li>
+                        <li>Enter his challenger's name in p2 above</li>
+                        <li>Click submit to begin the challenge</li>
+                    </ol>
+                    <br>
+                    <h3>TC-Ratings</h3>
+                    <ul>
+                        <li>TC-Rating are the proprietary way the challenge rates each stat category</li>
+                        <li>TC-Rating are calculated with linear interpolation comparing the current player's stat to the best in the league</li>
+                        <li>The summary is adding all the the TC-ratings to a single number to compare</li>
+                        <li>Who's better? The higher the better.</li>
+                    </ul>
+                </div>
             </section>
             <div class="row cards hide-me">
                 <div class="col-sm-12">
@@ -42,6 +74,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <br>
                 </div>
                 <div class="col-sm-6">
                     <h2 class="player1-header" >Column 1</h2>
@@ -143,6 +176,7 @@
                 </div>
             </div>
         </div>
+        <br>
         <script src="script.js"> </script>
     </body>
 </HTML>

@@ -173,7 +173,9 @@ function watchClickMe(){
     $(".js-players-form").submit(event=>{
         event.preventDefault()
         fetchDualTrial()
+        $(".landing-page").addClass("hide-me")
     })
+
 }
 
 function readyfx(){
