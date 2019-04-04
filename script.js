@@ -169,7 +169,6 @@ function fetchDualTrial(){
 }
 
 function watchClickMe(){
-    console.log("Ready to receive a click me.")
     $(".js-players-form").submit(event=>{
         event.preventDefault()
         fetchDualTrial()
@@ -178,7 +177,32 @@ function watchClickMe(){
 
 }
 
+function navigateTo(searchClass){
+    const allClasses = [".js-pitcher-button",".js-hitter-button"]
+    const formClasses = [".pitchers",".hitters"]
+    for (let i=0; i<allClasses.length ;i++){
+        if (allClasses[i] === searchClass ){
+            $(`${allClasses[i]}`).removeClass("hide-me")
+            $(`${formClasses[i]}`).removeClass("hide-me")
+        }
+        else {
+            $(`${allClasses[i]}`).addClass("hide-me")
+            $(`${formClasses[i]}`).addClass("hide-me")
+        }
+    }
+}
+
+function watchNavigate(){
+    $(".js-pitcher-button").click(event=>{
+        navigateTo(".js-hitter-button")
+    })
+    $(".js-hitter-button").click(event=>{
+        navigateTo(".js-pitcher-button")
+    })
+}
+
 function readyfx(){
     watchClickMe()
+    watchNavigate()
 }
 $(readyfx())

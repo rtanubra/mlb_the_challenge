@@ -1,13 +1,26 @@
 h1{
     text-align: center;
 }
-.hide-me{
-    display:none;
-}
-button{
+
+.toggle-compare-button{
     display:block;
     margin-left:auto;
-    margin-right:auto;
+    margin-right:auto; 
+    border: 1px solid black;
+    border-radius: 15px;
+}
+.js-pitcher-button{
+    background-color:#4592af;
+}
+.js-hitter-button{
+    background-color:#226089;
+    color:white;
+}
+.hitters-legend{
+    color:#226089;
+}
+.pitchers-legend{
+    color:#4592af;
 }
 .submit-button{
     color:white;
@@ -28,4 +41,7 @@ th{
 }
 .instructions{
     text-align: center;
+}
+.hide-me{
+    display:none;
 }
