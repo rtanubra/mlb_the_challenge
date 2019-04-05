@@ -10,6 +10,17 @@ const bestStatsHitter = {
     "CS":-8,
     "G":162
 }
+const bestPitcherStats = {
+    "IP":220,
+    "W":21,
+    "L":-8,
+    "SV":57,
+    "BB":-8,
+    "K":0,
+    "ERA":-1.70,
+    "WHIP":-0.9,
+    "BSV":-1
+}
 
 function createUrl(params,baseUrl){
     let final_url = baseUrl+"?"
@@ -20,7 +31,7 @@ function createUrl(params,baseUrl){
     return final_url
 }
 
-function updateDualTrial(data){
+function updateData(data){
     /**
      * {
         "players":players,
@@ -68,7 +79,7 @@ function updateDualTrial(data){
     }
     $(".cards").removeClass("hide-me")
 }
-function gatherDualTrial(myJson){
+function gatherDataHitter(myJson){
     console.log(myJson)
     const playerStats = myJson['cumulativeplayerstats']["playerstatsentry"]
     const statsAbrvHigh = ["R","HR","RBI","AVG","SB"]
@@ -133,7 +144,7 @@ function trimStr(mystr){
     return mystr
 }
 
-function fetchDualTrial(){
+function fetchHitter(){
     const options= {
         headers: new Headers({
             "Authorization": `Basic ${btoa(`${apikey}:${password}`)})`
@@ -160,8 +171,8 @@ function fetchDualTrial(){
         }
     ).then(
         responseJson=>{
-            const data = gatherDualTrial(responseJson)
-            updateDualTrial(data)
+            const data = gatherDataHitter(responseJson)
+            updateData(data)
         }
     ).catch(
         err=> console.log(err)
@@ -171,8 +182,11 @@ function fetchDualTrial(){
 function watchClickMe(){
     $(".js-players-form").submit(event=>{
         event.preventDefault()
-        fetchDualTrial()
+        fetchHitter()
         $(".landing-page").addClass("hide-me")
+    })
+    $(".js-players-form-p").submit(event=>{
+        event.preventDefault()
     })
 
 }
@@ -182,7 +196,7 @@ function updateInstructions(searchClass){
     if (searchClass===".js-pitcher-button"){
         $(".ol-instructions").empty()
         $(".ol-instructions").html(`
-            <li>Enter your pitcher's name for p1 above</li>
+            <li>Enter your pitcher's name in p1 above</li>
             <li>Enter his challenger's name in p2 above</li>
             <li>Click submit to begin the challenge</li>
         `)
@@ -190,7 +204,7 @@ function updateInstructions(searchClass){
     else{
         $(".ol-instructions").empty()
         $(".ol-instructions").html(`
-            <li>Enter your hitter's name for p1 above</li>
+            <li>Enter your hitter's name in p1 above</li>
             <li>Enter his challenger's name in p2 above</li>
             <li>Click submit to begin the challenge</li>
         `)
