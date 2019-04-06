@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
         <title>MLB The Challenge!</title>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+        <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">-->
          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Gentium+Basic" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -19,12 +19,14 @@
         <div class="container-fluid">
             <section class="form-section hitters">
                 <form action="" class="js-players-form" >
-                    <legend class="hitters-legend" >The Hitters</legend>
-                    <label for="js-player-1" >P1</label><input id="js-player-1" type="text" value="Eddie Rosario">
-                    <br>
-                    <label for="js-player-2" >P2</label><input id="js-player-2" type="text" value="Anthony Rizzo">
-                    <br>
-                    <input class="submit-button" type="submit" value="Run The-Challenge">
+                    <fieldset>
+                        <legend class="hitters-legend" >The Hitters</legend>
+                        <label for="js-player-1" >P1</label><input id="js-player-1" type="text" value="Eddie Rosario">
+                        <br>
+                        <label for="js-player-2" >P2</label><input id="js-player-2" type="text" value="Anthony Rizzo">
+                        <br>
+                        <input class="submit-button" type="submit" value="Run The-Challenge">
+                    </fieldset>
                 </form>
                 <br>
             </section>
@@ -33,7 +35,7 @@
                     <legend class="pitchers-legend" >The Pitchers</legend>
                     <label for="js-player-1-p" >P1</label><input id="js-player-1-p" type="text" value="Max Scherzer">
                     <br>
-                    <label for="js-player-2-p" >P2</label><input id="js-player-2-p" type="text" value="Clayton Kershaw">
+                    <label for="js-player-2-p" >P2</label><input id="js-player-2-p" type="text" value="Justin Verlander">
                     <br>
                     <input class="submit-button" type="submit" value="Run The-Challenge">
                 </form>
@@ -45,9 +47,11 @@
                     <h2 class="instructions">Welcome, read me before use!</h2>
                     <h3>How to Use</h3>
                     <ol class="ol-instructions" >
+                        <li>You are ready to compare two hitters</li> 
                         <li>Enter your hitter's name in p1 above</li>
                         <li>Enter his challenger's name in p2 above</li>
                         <li>Click submit to begin the challenge</li>
+                        <li>If you would prefer to compare two pitchers instead press "Compare Pitchers" above</li>
                     </ol>
                     <br>
                     <h3>TC-Ratings</h3>

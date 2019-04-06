@@ -290,17 +290,21 @@ function updateInstructions(searchClass){
     if (searchClass===".js-pitcher-button"){
         $(".ol-instructions").empty()
         $(".ol-instructions").html(`
+            <li>You are ready to compare two pitchers</li>
             <li>Enter your pitcher's name in p1 above</li>
             <li>Enter his challenger's name in p2 above</li>
             <li>Click submit to begin the challenge</li>
+            <li>If you would prefer to compare two hitters press "Compare Hitters" above</li>
         `)
     }
     else{
         $(".ol-instructions").empty()
         $(".ol-instructions").html(`
+            <li>You are ready to compare two hitters</li>
             <li>Enter your hitter's name in p1 above</li>
             <li>Enter his challenger's name in p2 above</li>
             <li>Click submit to begin the challenge</li>
+            <li>If you would prefer to compare two pitchers instead press "Compare Pitchers" above</li>
         `)
     }
 }
