@@ -13,13 +13,13 @@ const bestStatsHitter = {
 const bestPitcherStats = {
     "IP":220,
     "W":21,
-    "L":-8,
+    "L":-16,
     "SV":57,
-    "BB":-8,
-    "K":0,
-    "ERA":-1.70,
-    "WHIP":-0.9,
-    "BSV":-1
+    "BB":-95,
+    "SO":300,
+    "ERA":-6.13,
+    "WHIP":-1.48,
+    "BSV":-8
 }
 
 function createUrl(params,baseUrl){
@@ -79,6 +79,7 @@ function updateData(data){
     }
     $(".cards").removeClass("hide-me")
 }
+
 function gatherDataHitter(myJson){
     console.log(myJson)
     const playerStats = myJson['cumulativeplayerstats']["playerstatsentry"]
@@ -96,8 +97,8 @@ function gatherDataHitter(myJson){
         }
     }
     const players = [
-        `${playerStats[0]["player"]["FirstName"]} ${playerStats[0]["player"]["LastName"]} (${playerStats[0]["player"]["JerseyNumber"]})`,
-        `${playerStats[1]["player"]["FirstName"]} ${playerStats[1]["player"]["LastName"]} (${playerStats[1]["player"]["JerseyNumber"]})`
+        `${playerStats[0]["player"]["FirstName"]} ${playerStats[0]["player"]["LastName"]}`,
+        `${playerStats[1]["player"]["FirstName"]} ${playerStats[1]["player"]["LastName"]}`
     ]
     let stats = {
         "G":[[0,0],[0,0]],
@@ -133,7 +134,68 @@ function gatherDataHitter(myJson){
         "summary":summary
     }
 }
+function gatherDataPitcher(myJson){
+    console.log(myJson)
+    const playerStats = myJson['cumulativeplayerstats']["playerstatsentry"]
+    const fullListOfNames = Object.keys(playerStats[0]["stats"])
+    const statsAbrvHigh = ["IP","W","SV"]
+    const statsAbrvLow = ["L","BB","K","ERA","WHIP","BSV"]
+    const players = [
+        `${playerStats[0]["player"]["FirstName"]} ${playerStats[0]["player"]["LastName"]}`,
+        `${playerStats[1]["player"]["FirstName"]} ${playerStats[1]["player"]["LastName"]}`
+    ]
+    const statsAbrvs = []
+    const statsNames = []
 
+    for (let i=0; i< fullListOfNames.length;i++){
+        if (statsAbrvs.indexOf(playerStats[0]["stats"][fullListOfNames[i]]["@abbreviation"])<0){
+            if (playerStats[0]["stats"][fullListOfNames[i]]["@category"]==="Pitching"){
+                statsAbrvs.push(playerStats[0]["stats"][fullListOfNames[i]]["@abbreviation"])
+                statsNames.push(fullListOfNames[i])
+            } 
+        }
+    }
+    console.log(statsAbrvs)
+    console.log(statsNames)
+    let stats = {
+        "IP":[[0,0],[0,0]],
+        "W": [[0,0],[0,0]],
+        "SV":[[0,0],[0,0]],
+        "L":[[0,0],[0,0]],
+        "BB":[[0,0],[0,0]],
+        "ERA":[[0,0],[0,0]],
+        "WHIP":[[0,0],[0,0]],
+        "SO":[[0,0],[0,0]],
+    }
+    console.log(stats)
+    console.log(stats["W"])
+    for (let i =0; i<2; i++){
+        for (let x = 0; x<statsNames.length; x++){
+            let statOInterest = parseFloat(playerStats[i]["stats"][statsNames[x]]["#text"])
+            let bestStat = bestPitcherStats[statsAbrvs[x]]
+            console.log(statsAbrvs[x],statsNames[x],statOInterest)
+            stats[statsAbrvs[x]][i][0] = statOInterest
+            stats[statsAbrvs[x]][i][1] = Math.round(statOInterest/bestStat*10000)/100
+        }
+    }
+    const summary= [0,0]
+    for (let i = 0; i<statsAbrvs.length; i ++){
+        summary[0] += stats[statsAbrvs[i]][0][1]
+        summary[1] += stats[statsAbrvs[i]][1][1]
+    }
+    //round summary
+    summary[0] = Math.round(summary[0]*100)/100
+    summary[1] = Math.round(summary[1]*100)/100
+
+    return {
+        "players":players,
+        "stats":stats,
+        "statsNames":statsNames,
+        "statsAbrvs":statsAbrvs,
+        "summary":summary
+    }
+
+}
 function hyphonateName(name){
     const hyphonated_name = name.replace(" ","-")
     return hyphonated_name
@@ -143,7 +205,6 @@ function trimStr(mystr){
     mystr = mystr.replace(/\./g,"")
     return mystr
 }
-
 function fetchHitter(){
     const options= {
         headers: new Headers({
@@ -179,6 +240,37 @@ function fetchHitter(){
     )
 }
 
+function fetchPitcher(){
+    const options= {
+        headers: new Headers({
+            "Authorization": `Basic ${btoa(`${apikey}:${password}`)})`
+        })
+    }
+    const baseUrl= "https://api.mysportsfeeds.com/v1.2/pull/mlb/2018-regular/cumulative_player_stats.json"
+    const player1 = hyphonateName(trimStr($("#js-player-1-p").val()))
+    const player2 = hyphonateName(trimStr($("#js-player-2-p").val()))
+    console.log(player1,player2)
+    const params = {
+        "player":`${player1},${player2}`,
+        "playerstats":"IP,W,SO,SV,L,BB,ERA,WHIP",
+        "sort":"player.lastname"
+    }
+    const fetchUrl = createUrl(params,baseUrl)
+    console.log(fetchUrl)
+    fetch(fetchUrl,options).then(response=>{
+        if (response.ok){
+            return response.json()
+        } else {
+            throw new Error(response.statusText)
+        }
+    }).then(
+        responseJson=>{
+            const data = gatherDataPitcher(responseJson)
+            updateData(data)
+        }
+    ).catch(err=>{console.log(err)})
+
+}
 function watchClickMe(){
     $(".js-players-form").submit(event=>{
         event.preventDefault()
@@ -187,6 +279,8 @@ function watchClickMe(){
     })
     $(".js-players-form-p").submit(event=>{
         event.preventDefault()
+        fetchPitcher()
+        $(".landing-page").addClass("hide-me")
     })
 
 }
